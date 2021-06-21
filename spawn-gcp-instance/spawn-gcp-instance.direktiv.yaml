@@ -1,0 +1,24 @@
+id: spawn-gcp-ubuntu-instance
+functions:
+- id: tfrun
+  image: vorteil/terraform:v1
+  files:
+  - key: main.tf
+    scope: workflow
+    type: plain
+description: spawns a new gcp instance that returns the ip
+states:
+  - id: spawn-gcp-instance
+    type: action
+    action:
+      secrets: ["GCP_PROJECT_ID"]
+      function: tfrun
+      input: |
+        {
+          "action": "apply",
+          "args-on-init": ["-backend-config=address=http://localhost:8001/terraform-gcp-instance"],
+          "variables": {
+            "state-name": "terraform-gcp-instance",
+            "project_id": .secrets.GCP_PROJECT_ID
+          }
+        }

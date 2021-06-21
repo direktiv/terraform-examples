@@ -1,0 +1,24 @@
+id: spawn-azure-ubuntu-instance
+functions:
+- id: tfrun
+  image: vorteil/terraform:v1
+  files:
+  - key: main.tf
+    scope: workflow
+    type: plain
+description: spawns a new azure instance that returns the ip 
+states:
+  - id: spawn-azure-instance
+    type: action
+    action:
+      secrets: ["AZURE_CLIENT_SECRET"]
+      function: tfrun
+      input: |
+        {
+          "action": "apply",
+          "args-on-init": ["-backend-config=address=http://localhost:8001/terraform-azure-instance"],
+          "variables": {
+            "state-name": "terraform-azure-instance",
+            "azure_client_secret": .secrets.AZURE_CLIENT_SECRET
+          }
+        }
