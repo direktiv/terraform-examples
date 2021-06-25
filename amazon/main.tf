@@ -4,8 +4,8 @@ terraform {
 
 provider "aws" {
   region = var.region
-  access_key = var.amazon_access_key
-  secret_key = var.amazon_secret_key
+  access_key = var.amazon_key
+  secret_key = var.amazon_key
 }
 
 variable "region" {
