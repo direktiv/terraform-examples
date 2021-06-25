@@ -3,16 +3,20 @@ terraform {
 }
 
 provider "aws" {
-  region = "us-east-2"
+  region = var.region
   access_key = var.amazon_access_key
   secret_key = var.amazon_secret_key
 }
 
-variable "amazon_access_key" {
+variable "region" {
+  description = "the region you wish to use aws on"
+}
+
+variable "amazon_key" {
   description = "amazon_access_key to use for authentication"
 }
 
-variable "amazon_secret_key" {
+variable "amazon_secret" {
   description = "amazon_secret_key to use for authentication"
 }
 
@@ -35,10 +39,6 @@ data "aws_ami" "ubuntu" {
 resource "aws_instance" "web" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t3.micro"
-
-  tags = {
-    Name = "HelloWorld"
-  }
 }
 
 output "ip-address" {

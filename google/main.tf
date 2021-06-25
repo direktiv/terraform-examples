@@ -3,9 +3,7 @@ terraform {
 }
 
 provider "google" {
-    credentials = <<EOT
-        SERVICE_ACCOUNT_KEY_FILE_CONTENTS
-    EOT
+    credentials = var.service_account_key
 }
 
 resource "google_compute_instance" "default" {
@@ -33,6 +31,9 @@ resource "google_compute_instance" "default" {
 
 }
 
+variable "service_account_key" {
+  description = "the entire contents of a service account key"
+}
 variable "project_id" {
   description = "project_id to spawn the virtual machine on"
 }
