@@ -20,6 +20,10 @@ variable "amazon_secret" {
   description = "amazon_secret_key to use for authentication"
 }
 
+variable "key_pair_name" {
+  description = "key_name to use for operating system access"
+}
+
 data "aws_ami" "ubuntu" {
   most_recent = true
 
@@ -39,6 +43,7 @@ data "aws_ami" "ubuntu" {
 resource "aws_instance" "web" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t3.micro"
+  key_name      = var.key_pair_name
 }
 
 output "ip-address" {
